@@ -31,3 +31,12 @@ export const donationSchema = z.object({
 })
 
 export type DonationFormData = z.infer<typeof donationSchema>;
+
+export const updateSchema = z.object({
+  campaignId: z.string().min(1, "Campaign ID is required"),
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  description: z.string().min(50, "Please provide more details"),
+  type: z.enum(["logistics", "delivery", "purchase"])
+})
+
+export type UpdateFormData = z.infer<typeof updateSchema>;
