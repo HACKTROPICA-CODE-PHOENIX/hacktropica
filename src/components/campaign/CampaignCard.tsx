@@ -59,7 +59,7 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
             {/* Header: NGO & Date */}
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-1.5 overflow-hidden">
-                <span className="text-md font-bold text-gray-400 uppercase tracking-tight truncate max-w-[100px]">
+                <span className="text-sm font-bold text-gray-400 uppercase tracking-tight max-w-[100px]">
                   {ngo?.profile.name || "Unknown"}
                 </span>
                 <ShieldCheck className="w-3 h-3 text-brand-500 shrink-0" />
@@ -106,12 +106,6 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
                 className="h-1 mb-3 bg-white/5 [&>div]:bg-brand-500"
               />
 
-              <button
-                onClick={handleDonateClick}
-                className="w-full py-2 bg-white/5 border border-white/10 text-white text-[11px] font-bold uppercase tracking-wider rounded-md transition-colors duration-300 hover:bg-white/50 hover:border-white hover:text-black relative z-20"
-              >
-                Donate
-              </button>
             </div>
           </div>
         </div>
