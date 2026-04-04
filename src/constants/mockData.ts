@@ -44,7 +44,7 @@ export interface ImpactUpdate {
   title: string;
   description: string;
   imageUrl: string;
-  postedAt: string;
+  createdAt: string;
 }
 
 export const DUMMY_NGOS: NGO[] = [
@@ -159,7 +159,7 @@ export const DUMMY_DONATIONS: Donation[] = [
   },
 ];
 
-export const DUMMY_UPDATES: ImpactUpdate[] = [
+export const DUMMY_UPDATES = [
   {
     id: "upd_001",
     campaignId: "camp_001",
