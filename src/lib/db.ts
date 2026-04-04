@@ -1,5 +1,6 @@
-import { env } from "@/validator/schemas/env";
+
 import { MongoClient } from "mongodb";
+import { env } from "@/validator/schemas/env"
 
 if (!env.DATABASE_URL) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
