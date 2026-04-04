@@ -2,22 +2,30 @@
 
 import Link from "next/link";
 import { ArrowRight, Zap, Globe, Lock, Rocket } from "lucide-react";
+import DarkVeil from "@/components/DarkVeil";
+import CurvedLoop from "@/components/CurvedLoop";
 
 export default function Home() {
   return (
     <main className="flex-grow pt-24">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-6 lg:px-8 relative overflow-hidden">
+      <section className="flex items-center justify-center px-6 lg:px-8 relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl" />
+          <DarkVeil
+            hueShift={222}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+          />
         </div>
 
-        <div className="max-w-4xl mx-auto text-center space-y-8 opacity-0 animate-fade-in-up stagger-1">
+        <div className="max-w-4xl mx-auto text-center space-y-8 opacity-0 animate-fade-in-up stagger-1 mt-10">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-dark-border bg-dark-surface/50 text-xs font-mono text-gray-400 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
             Welcome to DONOR FI
           </div>
 
@@ -37,7 +45,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in-up stagger-2">
             <Link
               href="/explore"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-brand-500 hover:bg-brand-600 text-black font-medium transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white hover:bg-brand-600 text-black font-medium transition-colors"
             >
               Explore Campaigns
               <ArrowRight className="w-4 h-4" />
@@ -51,8 +59,18 @@ export default function Home() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 pt-12 opacity-0 animate-fade-in-up stagger-3">
-            <div>
+
+
+          <div className="text-white text-center w-screen">
+            <CurvedLoop
+              marqueeText="DONOR FI ✦ OPEN ✦ CAMPAIGNS ✦ SOLANA ✦"
+              speed={1.4}
+              curveAmount={100}
+              direction="right"
+              interactive={false}
+              className="custom-text-style"
+            />
+            {/* <div>
               <div className="text-3xl md:text-4xl font-bold text-brand-500 mb-2">500K+</div>
               <p className="text-sm text-gray-400">SOL Funded</p>
             </div>
@@ -63,7 +81,7 @@ export default function Home() {
             <div>
               <div className="text-3xl md:text-4xl font-bold text-brand-500 mb-2">50K+</div>
               <p className="text-sm text-gray-400">Community Members</p>
-            </div>
+            </div>*/}
           </div>
         </div>
       </section>
