@@ -1,73 +1,115 @@
+"use client";
+
 import Link from "next/link";
 import { Campaign, NGO } from "@/constants/mockData";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { ArrowUpRight, ShieldCheck, Hexagon } from "lucide-react";
 import { TrustBadge } from "./TrustBadge";
+import { Progress } from "@/components/ui/progress";
 
 interface CampaignCardProps {
   campaign: Campaign;
   ngo: NGO | undefined;
+  imgPattern?: string;
 }
 
-export function CampaignCard({ campaign, ngo }: CampaignCardProps) {
+export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
   const progress = Math.min(
     (campaign.raisedSol / campaign.targetSol) * 100,
     100
   );
 
+  const patterns = [
+    "radial-gradient(circle at 0% 0%, #331500 0%, #030303 100%)",
+    "radial-gradient(circle at 100% 100%, #1a0a2e 0%, #030303 100%)",
+    "linear-gradient(45deg, #0a192f 0%, #030303 100%)",
+    "radial-gradient(circle at 50% 50%, #290a0a 0%, #030303 100%)",
+    "linear-gradient(180deg, #1f1c08 0%, #030303 100%)",
+    "radial-gradient(circle at 0% 100%, #051c14 0%, #030303 100%)",
+  ];
+
+  const categoryMap: Record<string, string> = {
+    "Infrastructure": "Infrastructure",
+    "DeFi": "DeFi",
+    "Public Goods": "Public Goods",
+    "DePIN": "DePIN",
+    "UX/UI": "UX/UI",
+    "Security": "Security",
+  };
+
+  const category = categoryMap[campaign.title?.includes("Zero") ? "Infrastructure" : 
+                            campaign.title?.includes("AI") ? "DePIN" :
+                            campaign.title?.includes("Wallet") ? "UX/UI" :
+                            campaign.title?.includes("Orderbook") ? "DeFi" :
+                            campaign.title?.includes("Storage") ? "Infrastructure" : "Security"];
+
+  // Deterministic pattern selection based on campaign ID (fixes hydration error)
+  const getPatternIndex = (id: string) => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      const char = id.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash) % patterns.length;
+  };
+
+  const backgroundPattern = imgPattern || patterns[getPatternIndex(campaign.id)];
+
   return (
-    <Card className="flex flex-col overflow-hidden transition-all hover:shadow-md">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div>
-            <CardTitle className="line-clamp-1">{campaign.title}</CardTitle>
-            <CardDescription className="line-clamp-1 mt-1">
-              by {ngo?.profile.name || "Unknown NGO"}
-            </CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="flex-1">
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-          {campaign.description}
-        </p>
-
-        {ngo && (
-          <div className="mb-4">
-            <TrustBadge
-              score={ngo.verificationStatus.trustScore}
-              aiVerified={ngo.verificationStatus.aiVerified}
-            />
-          </div>
-        )}
-
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="font-medium">{campaign.raisedSol} SOL</span>
-            <span className="text-muted-foreground">
-              of {campaign.targetSol} SOL
+    <Link href={`/campaign/${campaign.id}`}>
+      <div className="campaign-card glass-panel rounded-2xl relative overflow-hidden group cursor-pointer flex flex-col ">
+        {/* Gradient Background */}
+        <div 
+          className="absolute inset-0 -z-10 opacity-40"
+          style={{ background: backgroundPattern }}
+        />
+        <div className="card-glow" />
+        <div className="p-6 flex-grow flex flex-col relative z-10">
+          <div className="flex items-center gap-2 mb-4 text-xs font-mono text-gray-500 uppercase tracking-wider">
+            <span>{ngo?.profile.name || "Unknown Creator"}</span>
+            <span className="w-1 h-1 rounded-full bg-gray-700" />
+            <span className="text-brand-500 flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3" /> Verified
             </span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
-            <div
-              className="h-full bg-primary transition-all"
-              style={{ width: `${progress}%` }}
-            />
+
+          <h3 className="text-xl font-heading font-bold mb-3 text-white leading-tight group-hover:text-brand-500 transition-colors line-clamp-2">
+            {campaign.title}
+          </h3>
+
+          <p className="text-gray-400 text-sm mb-6 line-clamp-2 font-light">
+            {campaign.description}
+          </p>
+
+          {/* Bottom Metrics & Progress */}
+          <div className="mt-auto">
+            <div className="mb-3">
+              <Progress value={progress} className="bg-dark-bg border border-white/5 [&>*]:bg-brand-500" />
+            </div>
+
+            <div className="flex justify-between items-end">
+              <div>
+                <div className="font-mono text-lg text-white font-medium">
+                  {campaign.raisedSol.toLocaleString()}{" "}
+                  <span className="text-gray-500 text-xs">SOL</span>
+                </div>
+                <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-1">
+                  Goal: {campaign.targetSol.toLocaleString()}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <div className="text-white font-mono text-sm">Created at</div>
+                  <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">
+                    {campaign.createdAt.split("T")[0]}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </CardContent>
-      <CardFooter>
-        <Link href={`/campaign/${campaign.id}`} className="w-full">
-          <Button className="w-full">View Details</Button>
-        </Link>
-      </CardFooter>
-    </Card>
+      </div>
+    </Link>
   );
 }

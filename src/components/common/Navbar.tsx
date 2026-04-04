@@ -1,36 +1,48 @@
+"use client";
+
 import Link from "next/link";
 import { WalletConnect } from "./WalletConnect";
+import { Zap } from "lucide-react";
 
 export function Navbar() {
   return (
-    <nav className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold sm:inline-block">HackTropica</span>
-          </Link>
-          <div className="hidden space-x-4 sm:flex items-center">
+    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <nav className="pointer-events-auto w-full max-w-7xl backdrop-blur-lg rounded-full border border-white/15 shadow-2xl shadow-black/80">
+        <div className="px-4 md:px-8">
+          <div className="flex justify-between items-center h-16 md:h-20">
+            {/* Logo */}
             <Link
               href="/"
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className="flex items-center gap-3 cursor-pointer group hover:opacity-80 transition-opacity"
             >
-              Campaigns
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-500/30 flex items-center justify-center text-brand-500 group-hover:bg-brand-500 group-hover:text-black transition-all duration-300">
+                <Zap className="w-4 h-4 md:w-5 md:h-5" />
+              </div>
+              <span className="font-heading font-bold text-xl md:text-2xl tracking-tighter uppercase">
+                NEXUS
+              </span>
             </Link>
-            <Link
-              href="/dashboard"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Dashboard
-            </Link>
+
+            {/* Right Actions */}
+            <div className="flex items-center gap-4 md:gap-6">
+              <div className="hidden md:flex gap-8 text-sm font-medium text-gray-400 mr-2">
+                <Link href="/" className="hover:text-white transition-colors">
+                  Home
+                </Link>
+                <Link href="/explore" className="hover:text-white transition-colors">
+                  Explore
+                </Link>
+                <Link href="/dashboard" className="hover:text-white transition-colors">
+                  Dashboard
+                </Link>
+              </div>
+
+              {/* Connect Wallet Button */}
+              <WalletConnect />
+            </div>
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Search or other UI can go here */}
-          </div>
-          <WalletConnect />
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }

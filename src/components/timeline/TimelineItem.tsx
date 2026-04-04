@@ -56,17 +56,7 @@ export function TimelineItem({ update, isEven }: TimelineItemProps) {
           <p className="text-sm text-muted-foreground mb-4">
             {update.description}
           </p>
-          {update.imageUrl && (
-            <div className="relative w-full h-48 rounded-md overflow-hidden bg-muted">
-              {/* Using eslint-disable next line for dummy image URL */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={update.imageUrl}
-                alt={update.title}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          )}
+          
         </CardContent>
       </Card>
     </div>
