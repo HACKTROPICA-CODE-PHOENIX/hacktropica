@@ -53,6 +53,21 @@ export function DonationBox({ campaign }: DonationBoxProps) {
         amount: Number(amount),
       });
 
+      const response = await fetch("/api/donation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          campaignId: campaign.id,
+          amount: Number(amount),
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to record donation in database");
+      }
+
       setTxSignature(signature);
       setShowSuccess(true);
       setAmount("");
