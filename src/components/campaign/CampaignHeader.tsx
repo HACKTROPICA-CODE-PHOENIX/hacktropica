@@ -12,6 +12,8 @@ export function CampaignHeader({ campaign, ngo }: CampaignHeaderProps) {
     100
   );
 
+  
+
   return (
     <div className="space-y-6">
       <div>

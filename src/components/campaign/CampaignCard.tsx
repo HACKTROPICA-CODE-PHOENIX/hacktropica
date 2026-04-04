@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Campaign, NGO } from "@/constants/mockData";
-import { ArrowUpRight, ShieldCheck, Hexagon } from "lucide-react";
-import { TrustBadge } from "./TrustBadge";
+import { ShieldCheck, Calendar } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { DonateModal } from "./DonateModal";
 
@@ -15,10 +14,7 @@ interface CampaignCardProps {
 }
 
 export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
-  const progress = Math.min(
-    (campaign.raisedSol / campaign.targetSol) * 100,
-    100
-  );
+  const progress = Math.min((campaign.raisedSol / campaign.targetSol) * 100, 100);
 
   const patterns = [
     "radial-gradient(circle at 0% 0%, #331500 0%, #030303 100%)",
@@ -29,22 +25,6 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
     "radial-gradient(circle at 0% 100%, #051c14 0%, #030303 100%)",
   ];
 
-  const categoryMap: Record<string, string> = {
-    "Infrastructure": "Infrastructure",
-    "DeFi": "DeFi",
-    "Public Goods": "Public Goods",
-    "DePIN": "DePIN",
-    "UX/UI": "UX/UI",
-    "Security": "Security",
-  };
-
-  const category = categoryMap[campaign.title?.includes("Zero") ? "Infrastructure" : 
-                            campaign.title?.includes("AI") ? "DePIN" :
-                            campaign.title?.includes("Wallet") ? "UX/UI" :
-                            campaign.title?.includes("Orderbook") ? "DeFi" :
-                            campaign.title?.includes("Storage") ? "Infrastructure" : "Security"];
-
-  // Deterministic pattern selection based on campaign ID (fixes hydration error)
   const getPatternIndex = (id: string) => {
     let hash = 0;
     for (let i = 0; i < id.length; i++) {
@@ -56,7 +36,6 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
   };
 
   const backgroundPattern = imgPattern || patterns[getPatternIndex(campaign.id)];
-
   const [isDonateOpen, setIsDonateOpen] = useState(false);
 
   const handleDonateClick = (e: React.MouseEvent) => {
@@ -67,73 +46,76 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
 
   return (
     <>
-      <Link href={`/campaign/${campaign.id}`}>
-      <div className="campaign-card glass-panel rounded-2xl relative overflow-hidden group cursor-pointer flex flex-col ">
-        {/* Gradient Background */}
-        <div 
-          className="absolute inset-0 -z-10 opacity-40"
-          style={{ background: backgroundPattern }}
-        />
-        <div className="card-glow" />
-        <div className="p-6 flex-grow flex flex-col relative z-10">
-          <div className="flex items-center gap-2 mb-4 text-xs font-mono text-gray-500 uppercase tracking-wider">
-            <span>{ngo?.profile.name || "Unknown Creator"}</span>
-            <span className="w-1 h-1 rounded-full bg-gray-700" />
-            <span className="text-brand-500 flex items-center gap-1">
-              <ShieldCheck className="w-3 h-3" /> Verified
-            </span>
-          </div>
+      <Link href={`/campaign/${campaign.id}`} className="block group">
+        <div className="relative flex flex-col h-[240px] rounded-xl border border-white/10 bg-black/40 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-brand-500/50 hover:-translate-y-1">
 
-          <h3 className="text-xl font-heading font-bold mb-3 text-white leading-tight group-hover:text-brand-500 transition-colors line-clamp-2">
-            {campaign.title}
-          </h3>
+          {/* Background Pattern Layer */}
+          <div
+            className="absolute inset-0 -z-10 opacity-30 group-hover:opacity-50 transition-opacity"
+            style={{ background: backgroundPattern }}
+          />
 
-          <p className="text-gray-400 text-sm mb-6 line-clamp-2 font-light">
-            {campaign.description}
-          </p>
-
-          {/* Bottom Metrics & Progress */}
-          <div className="mt-auto">
-            <div className="mb-3">
-              <Progress value={progress} className="bg-dark-bg border border-white/5 [&>*]:bg-brand-500" />
+          <div className="p-4 flex flex-col h-full">
+            {/* Header: NGO & Date */}
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center gap-1.5 overflow-hidden">
+                <span className="text-sm font-bold text-gray-400 uppercase tracking-tight max-w-[100px]">
+                  {ngo?.profile.name || "Unknown"}
+                </span>
+                <ShieldCheck className="w-3 h-3 text-brand-500 shrink-0" />
+              </div>
+              <div className="flex items-center gap-1 text-gray-500 shrink-0">
+                <Calendar className="w-3 h-3" />
+                <span className="text-md font-mono">
+                  {campaign.createdAt.split("T")[0]}
+                </span>
+              </div>
             </div>
 
-            <div className="flex justify-between items-end">
-              <div>
-                <div className="font-mono text-lg text-white font-medium">
-                  {campaign.raisedSol.toLocaleString()}{" "}
-                  <span className="text-gray-500 text-xs">SOL</span>
+            {/* Title & Description */}
+            <div className="space-y-1 mb-2">
+              <h3 className="text-base font-bold text-white leading-tight line-clamp-1 group-hover:text-brand-400 transition-colors">
+                {campaign.title}
+              </h3>
+              <p className="text-gray-400 text-md leading-snug line-clamp-2">
+                {campaign.description}
+              </p>
+            </div>
+
+            {/* Bottom Section: Stats & Action */}
+            <div className="mt-auto">
+              <div className="flex justify-between items-end mb-1.5">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-white font-mono text-sm font-semibold leading-none">
+                    {campaign.raisedSol.toLocaleString()}
+                  </span>
+                  <span className="text-[9px] text-gray-500 font-mono uppercase">
+                    / {campaign.targetSol.toLocaleString()} SOL
+                  </span>
                 </div>
-                <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-1">
-                  Goal: {campaign.targetSol.toLocaleString()}
+                <div className="text-right">
+                  <span className="text-brand-500 font-mono text-md font-bold">
+                    {Math.floor(progress)}%
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="text-right hidden sm:block">
-                  <div className="text-white font-mono text-sm">Created at</div>
-                  <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">
-                    {campaign.createdAt.split("T")[0]}
-                  </div>
-                </div>
+              {/* Shadcn Progress Component */}
+              <Progress
+                value={progress}
+                className="h-1 mb-3 bg-white/5 [&>div]:bg-brand-500"
+              />
 
-                <button
-                  onClick={handleDonateClick}
-                  className="px-4 py-2 bg-brand-500 text-black text-sm font-bold font-mono rounded-lg hover:brightness-110 transition-all relative z-20"
-                >
-                  Donate
-                </button>
-              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Link>
-    <DonateModal 
-      campaign={campaign} 
-      isOpen={isDonateOpen} 
-      onClose={() => setIsDonateOpen(false)} 
-    />
+      </Link>
+
+      <DonateModal
+        campaign={campaign}
+        isOpen={isDonateOpen}
+        onClose={() => setIsDonateOpen(false)}
+      />
     </>
   );
-}
+} 
