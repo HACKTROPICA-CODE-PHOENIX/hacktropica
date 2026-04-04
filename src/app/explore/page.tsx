@@ -1,8 +1,9 @@
 import clientPromise from "@/lib/db";
 import { Campaign, NGO } from "@/constants/mockData";
 import { CampaignCard } from "@/components/campaign/CampaignCard";
-import { Activity } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil";
+
+export const dynamic = "force-dynamic";
 
 async function getCampaignsAndNgos() {
   const client = await clientPromise;
@@ -50,6 +51,7 @@ async function getCampaignsAndNgos() {
 }
 
 export default async function Explore() {
+
   const { campaigns, ngos, sum } = await getCampaignsAndNgos();
 
   const formatSum = (num: number) => {
@@ -58,7 +60,6 @@ export default async function Explore() {
     }
     return num.toFixed(1);
   }
-  
 
   return (
     <>
