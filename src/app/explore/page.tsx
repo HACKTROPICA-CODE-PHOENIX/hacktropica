@@ -4,6 +4,8 @@ import { Activity } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil";
 
 export default function Explore() {
+
+  
   return (
     <>
       <div className="fixed inset-0 w-full h-screen -z-10 opacity-50">
