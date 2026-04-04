@@ -20,6 +20,7 @@ export interface NGO {
 export interface Campaign {
   id: string;
   ngoId: string;
+  walletAddress: string;
   title: string;
   description: string;
   targetSol: number;
@@ -49,7 +50,7 @@ export interface ImpactUpdate {
 export const DUMMY_NGOS: NGO[] = [
   {
     id: "ngo_001",
-    walletAddress: "8xR2...YqL9",
+    walletAddress: "5hhgeeGrsPVz8j3w8ELnzexYGhSfXCCtSLnQfjTsA1mD",
     profile: {
       name: "Global Food Initiative",
       mission: "Eradicating hunger in disaster-struck regions.",
@@ -68,7 +69,7 @@ export const DUMMY_NGOS: NGO[] = [
   },
   {
     id: "ngo_002",
-    walletAddress: "3aM7...PzW1",
+    walletAddress: "5hhgeeGrsPVz8j3w8ELnzexYGhSfXCCtSLnQfjTsA1mD",
     profile: {
       name: "Ocean Tech Cleanup",
       mission: "Removing microplastics using autonomous drones.",
@@ -87,7 +88,7 @@ export const DUMMY_NGOS: NGO[] = [
   },
   {
     id: "ngo_003",
-    walletAddress: "9vK4...BcN2",
+    walletAddress: "5hhgeeGrsPVz8j3w8ELnzexYGhSfXCCtSLnQfjTsA1mD",
     profile: {
       name: "Hope Foundation",
       mission: "Making the world a better place for everyone.",
@@ -110,6 +111,7 @@ export const DUMMY_CAMPAIGNS: Campaign[] = [
   {
     id: "camp_001",
     ngoId: "ngo_001", // Links to Global Food Initiative
+    walletAddress: "5hhgeeGrsPVz8j3w8ELnzexYGhSfXCCtSLnQfjTsA1mD",
     title: "Flood Relief Meals - Region Alpha",
     description:
       "Providing 10,000 hot meals to displaced families in the flooded northern sectors.",
@@ -120,6 +122,7 @@ export const DUMMY_CAMPAIGNS: Campaign[] = [
   {
     id: "camp_002",
     ngoId: "ngo_002", // Links to Ocean Tech Cleanup
+    walletAddress: "5hhgeeGrsPVz8j3w8ELnzexYGhSfXCCtSLnQfjTsA1mD",
     title: "Fleet Expansion Phase 1",
     description:
       "Funding the deployment of 5 new cleanup drones before the stormy season.",

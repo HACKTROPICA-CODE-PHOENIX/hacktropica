@@ -14,6 +14,7 @@ interface SuccessModalProps {
   onClose: () => void;
   campaignName: string;
   amount: string;
+  txSignature?: string;
 }
 
 export function SuccessModal({
@@ -21,6 +22,7 @@ export function SuccessModal({
   onClose,
   campaignName,
   amount,
+  txSignature,
 }: SuccessModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -38,11 +40,21 @@ export function SuccessModal({
             <span className="font-semibold">{campaignName}</span>.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
+        <div className="py-4 space-y-2">
           <p className="text-sm text-muted-foreground">
             Thank you for your contribution. Your donation is now recorded on
             the blockchain.
           </p>
+          {txSignature && (
+            <a
+              href={`https://explorer.solana.com/tx/${txSignature}?cluster=devnet`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs underline text-muted-foreground hover:text-foreground transition-colors break-all"
+            >
+              View transaction on Solana Explorer ↗
+            </a>
+          )}
         </div>
         <DialogFooter className="sm:justify-center">
           <Button type="button" onClick={onClose} className="w-full sm:w-auto">

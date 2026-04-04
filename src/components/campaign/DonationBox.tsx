@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Campaign } from "@/constants/mockData";
+import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
 import { useWallet } from "@/hooks/useWallet";
 import {
   Card,
@@ -13,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SuccessModal } from "@/components/feedback/SuccessModal";
+import { sendSol } from "@/lib/solana/transfer";
 
 interface DonationBoxProps {
   campaign: Campaign;
@@ -20,20 +22,46 @@ interface DonationBoxProps {
 
 export function DonationBox({ campaign }: DonationBoxProps) {
   const { connected, connect } = useWallet();
+  const solanaWallet = useSolanaWallet();
   const [amount, setAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [txSignature, setTxSignature] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleDonate = () => {
+  const handleDonate = async () => {
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) return;
 
+    if (!solanaWallet.connected || !solanaWallet.publicKey) {
+      setErrorMessage("Please connect your wallet first.");
+      return;
+    }
+
+    if (!campaign.walletAddress) {
+      setErrorMessage("This campaign has no recipient wallet configured.");
+      return;
+    }
+
     setIsProcessing(true);
-    // Mock transaction delay
-    setTimeout(() => {
-      setIsProcessing(false);
+    setErrorMessage("");
+    setTxSignature("");
+
+    try {
+      const signature = await sendSol({
+        fromWallet: solanaWallet,
+        toWallet: campaign.walletAddress,
+        amount: Number(amount),
+      });
+
+      setTxSignature(signature);
       setShowSuccess(true);
       setAmount("");
-    }, 1500);
+    } catch (error: any) {
+      console.error("Donation failed:", error);
+      setErrorMessage(error.message || "Transaction failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -73,6 +101,11 @@ export function DonationBox({ campaign }: DonationBoxProps) {
                   disabled={isProcessing}
                 />
               </div>
+
+              {errorMessage && (
+                <p className="text-sm text-red-500">{errorMessage}</p>
+              )}
+
               <Button
                 className="w-full"
                 onClick={handleDonate}
@@ -95,6 +128,7 @@ export function DonationBox({ campaign }: DonationBoxProps) {
         onClose={() => setShowSuccess(false)}
         campaignName={campaign.title}
         amount={amount}
+        txSignature={txSignature}
       />
     </>
   );

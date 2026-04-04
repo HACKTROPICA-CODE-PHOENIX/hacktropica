@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Campaign, NGO } from "@/constants/mockData";
 import { ArrowUpRight, ShieldCheck, Hexagon } from "lucide-react";
 import { TrustBadge } from "./TrustBadge";
 import { Progress } from "@/components/ui/progress";
+import { DonateModal } from "./DonateModal";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -55,8 +57,17 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
 
   const backgroundPattern = imgPattern || patterns[getPatternIndex(campaign.id)];
 
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+
+  const handleDonateClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDonateOpen(true);
+  };
+
   return (
-    <Link href={`/campaign/${campaign.id}`}>
+    <>
+      <Link href={`/campaign/${campaign.id}`}>
       <div className="campaign-card glass-panel rounded-2xl relative overflow-hidden group cursor-pointer flex flex-col ">
         {/* Gradient Background */}
         <div 
@@ -98,18 +109,31 @@ export function CampaignCard({ campaign, ngo, imgPattern }: CampaignCardProps) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="text-right">
+              <div className="flex items-center gap-4">
+                <div className="text-right hidden sm:block">
                   <div className="text-white font-mono text-sm">Created at</div>
                   <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">
                     {campaign.createdAt.split("T")[0]}
                   </div>
                 </div>
+
+                <button
+                  onClick={handleDonateClick}
+                  className="px-4 py-2 bg-brand-500 text-black text-sm font-bold font-mono rounded-lg hover:brightness-110 transition-all relative z-20"
+                >
+                  Donate
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </Link>
+    <DonateModal 
+      campaign={campaign} 
+      isOpen={isDonateOpen} 
+      onClose={() => setIsDonateOpen(false)} 
+    />
+    </>
   );
 }
