@@ -94,6 +94,63 @@ const DUMMY_NGOS = [
   }
 ];
 
+const DUMMY_CAMPAIGNS = [
+  {
+    ngoWalletAddress: "8Kz6Wz23Y7iH3B7T7Yt7uP7g2t7uW4uT7Yt7uP7g2t7",
+    title: "Flood Relief Meals - Region Alpha",
+    description: "Providing 10,000 hot meals to displaced families in the flooded northern sectors.",
+    targetSol: 150,
+    raisedSol: 125.5,
+    status: "completed",
+    createdAt: new Date("2026-04-04T13:12:32.148Z")
+  },
+  {
+    ngoWalletAddress: "8Kz6Wz23Y7iH3B7T7Yt7uP7g2t7uW4uT7Yt7uP7g2t7",
+    title: "Emergency Blankets & Shelter Tents",
+    description: "Procuring 500 heavy-duty thermal blankets and 50 rapid-deploy tents for families who lost their homes.",
+    targetSol: 80,
+    raisedSol: 12.0,
+    status: "active",
+    createdAt: new Date("2026-04-03T09:45:10.000Z")
+  },
+  {
+    ngoWalletAddress: "F3k8H1gT9vB2cN5mX7zL4pW6qR0sJ3yK5fD8bN2cA4m7",
+    title: "Laptops for Rural Classrooms",
+    description: "Providing 50 refurbished laptops and 1 year of Starlink satellite internet to an off-grid high school.",
+    targetSol: 120,
+    raisedSol: 120,
+    status: "active",
+    createdAt: new Date("2026-03-25T14:30:00.000Z")
+  },
+  {
+    ngoWalletAddress: "D9j6Z2Y7aBvX9cWQk4T5yN1pM3rL8zJ0vH5gF4dE6aB1",
+    title: "Clean Water Wells: Village Project",
+    description: "Drilling two sustainable boreholes equipped with solar-powered pumps to serve a community of 800+ residents without local water access.",
+    targetSol: 300,
+    raisedSol: 245.8,
+    status: "completed",
+    createdAt: new Date("2026-03-28T08:15:22.000Z")
+  },
+  {
+    ngoWalletAddress: "X7pL9qR2vM5nT8kW1zJ4cB6yN0mF3gD5hK8bJ1cA9vX2",
+    title: "Ocean Microplastic Cleanup Drone Phase 2",
+    description: "Funding the manufacturing and deployment of a second-generation autonomous drone that filters and compresses microplastics from the ocean surface.",
+    targetSol: 500,
+    raisedSol: 5.5,
+    status: "active",
+    createdAt: new Date("2026-04-04T07:00:00.000Z")
+  },
+  {
+    ngoWalletAddress: "M5nT8kW1zJ4cB6yN0mF3gD5hK8bJ1cA9vX2X7pL9q",
+    title: "Stray Animal Rescue & Rehab Clinic",
+    description: "Covering veterinary costs, specialized food formulas, and shelter rent for our urban wildlife and stray animal rescue operations.",
+    targetSol: 45,
+    raisedSol: 22.1,
+    status: "active",
+    createdAt: new Date("2026-04-01T11:20:45.000Z")
+  }
+];
+
 async function seed() {
   const uri = process.env.DATABASE_URL!;
   if (!uri) {
@@ -108,8 +165,11 @@ async function seed() {
 
     const db = client.db("hacktropica");
 
-    const result = await db.collection("ngos").insertMany(DUMMY_NGOS);
-    console.log(`🌱 Seeded ${result.insertedCount} NGOs`);
+    const deleted = await db.collection("campaigns").deleteMany({});
+    console.log(`🗑️ Deleted ${deleted.deletedCount} campaigns`);
+    
+    const result = await db.collection("campaigns").insertMany(DUMMY_CAMPAIGNS);
+    console.log(`🌱 Seeded ${result.insertedCount} campaigns`);
   } catch (error) {
     console.error("❌ Seed failed:", error);
     process.exit(1);
