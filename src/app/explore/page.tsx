@@ -1,11 +1,52 @@
-import { DUMMY_CAMPAIGNS, DUMMY_NGOS } from "@/constants/mockData";
+import clientPromise from "@/lib/db";
+import { Campaign, NGO } from "@/constants/mockData";
 import { CampaignCard } from "@/components/campaign/CampaignCard";
 import { Activity } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil";
 
-export default function Explore() {
+async function getCampaignsAndNgos() {
+  const client = await clientPromise;
+  const db = client.db("hacktropica");
 
-  
+  const [rawCampaigns, rawNgos] = await Promise.all([
+    db.collection("campaigns").find({}).sort({ createdAt: -1 }).limit(50).toArray(),
+    db.collection("ngos").find({}).toArray(),
+  ]);
+
+  const campaigns: Campaign[] = rawCampaigns.map((c) => ({
+    id: c._id.toString(),
+    ngoId: c.ngoWalletAddress ?? "",
+    walletAddress: c.ngoWalletAddress ?? "",
+    title: c.title,
+    description: c.description,
+    targetSol: c.targetSol,
+    raisedSol: c.raisedSol ?? 0,
+    createdAt: c.createdAt instanceof Date ? c.createdAt.toISOString() : String(c.createdAt ?? ""),
+  }));
+
+  const ngos: NGO[] = rawNgos.map((n) => ({
+    id: n._id.toString(),
+    walletAddress: n.walletAddress,
+    profile: n.profile ?? {
+      name: n.name ?? "Unknown",
+      mission: n.mission ?? "",
+      description: n.description ?? "",
+      fundPlan: n.fundPlan ?? "",
+    },
+    verificationStatus: n.verificationStatus ?? {
+      aiVerified: false,
+      trustScore: 0,
+      reasoning: "",
+    },
+    createdAt: n.createdAt instanceof Date ? n.createdAt.toISOString() : String(n.createdAt ?? ""),
+  }));
+
+  return { campaigns, ngos };
+}
+
+export default async function Explore() {
+  const { campaigns, ngos } = await getCampaignsAndNgos();
+
   return (
     <>
       <div className="fixed inset-0 w-full h-screen -z-10 opacity-50">
@@ -70,15 +111,15 @@ export default function Explore() {
           </div>
 
           <div className="flex items-center gap-2 text-sm text-gray-500 font-mono">
-            <span>0{DUMMY_CAMPAIGNS.length} ACTIVECAMPAIGNS</span>
+            <span>{String(campaigns.length).padStart(2, "0")} ACTIVE CAMPAIGNS</span>
             <Activity className="w-4 h-4 text-brand-500" />
           </div>
         </div>
 
         {/* Grid Container for Campaigns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-0 animate-fade-in-up stagger-3">
-          {DUMMY_CAMPAIGNS.map((campaign) => {
-            const ngo = DUMMY_NGOS.find((n) => n.id === campaign.ngoId);
+          {campaigns.map((campaign) => {
+            const ngo = ngos.find((n) => n.walletAddress === campaign.walletAddress);
             return (
               <CampaignCard key={campaign.id} campaign={campaign} ngo={ngo} />
             );
