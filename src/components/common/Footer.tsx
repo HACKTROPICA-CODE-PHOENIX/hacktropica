@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap, Twitter, Github } from "lucide-react";
+import { Zap } from "lucide-react";
 
 export function Footer() {
   return (
