@@ -102,7 +102,7 @@ export default async function CampaignPage({
         {/* Header Section */}
         <div className="relative flex flex-col justify-center min-h-[140px] mb-12 pb-8 border-b border-dark-border opacity-0 animate-fade-in-up stagger-2">
           {/* Massive Blurred Background Stat */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 -z-10 flex flex-col items-end opacity-[0.05] pointer-events-none select-none [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 -z-10 flex flex-col items-end opacity-20 pointer-events-none select-none [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
             <div className="flex items-baseline gap-2">
               <span className="text-[100px] md:text-[150px] font-heading font-bold text-white tracking-tighter leading-none">
                 {campaign.raisedSol}

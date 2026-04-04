@@ -17,6 +17,7 @@ export function TrustBadge({ score, aiVerified }: TrustBadgeProps) {
     label = "Medium Trust";
   }
 
+
   return (
     <div className="flex items-center gap-2">
       <Badge className={`${colorClass} text-white`}>
