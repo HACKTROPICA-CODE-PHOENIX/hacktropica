@@ -1,34 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useWallet } from "@/hooks/useWallet";
-import { Button } from "@/components/ui/button";
 
 export function WalletConnect() {
   const { connected, connecting, formattedAddress, connect, disconnect } =
     useWallet();
+  const [isConnected, setIsConnected] = useState(false);
 
-  if (connected) {
-    return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground font-mono">
-          {formattedAddress}
-        </span>
-        <Button variant="outline" size="sm" onClick={disconnect}>
-          Disconnect
-        </Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    setIsConnected(connected);
+  }, [connected]);
+
+  const handleClick = async () => {
+    if (isConnected) {
+      disconnect();
+    } else {
+      connect();
+    }
+  };
 
   return (
-    <Button
-      variant="default"
-      size="sm"
-      onClick={connect}
+    <button
+      onClick={handleClick}
       disabled={connecting}
+      className="btn-glow bg-white text-black px-5 py-2.5 md:px-6 md:py-3 rounded-full font-heading font-semibold text-xs md:text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95 disabled:opacity-70"
     >
-      {connecting ? "Connecting..." : "Connect Wallet"}
-    </Button>
+      <div className={`w-2 h-2 rounded-full transition-colors ${
+        isConnected ? 'bg-green-500' : 'bg-brand-500 animate-pulse'
+      }`} />
+      <span>
+        {connecting ? "Initializing..." : isConnected ? (formattedAddress || "Connected") : "Connect Wallet"}
+      </span>
+    </button>
   );
 }
