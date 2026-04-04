@@ -105,7 +105,7 @@ export function CampaignForm({ onSuccess }: { onSuccess?: () => void }) {
       <Button 
         type="submit" 
         disabled={loading}
-        className="w-full bg-brand-500 text-black hover:bg-brand-600 font-bold"
+        className="w-full bg-white text-black font-bold"
       >
         {loading ? "Creating..." : "Create Campaign"}
       </Button>

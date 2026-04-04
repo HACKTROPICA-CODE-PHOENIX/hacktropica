@@ -7,9 +7,9 @@ import CurvedLoop from "@/components/CurvedLoop";
 
 export default function Home() {
   return (
-    <main className="flex-grow pt-24">
+    <main className="flex-grow">
       {/* Hero Section */}
-      <section className="flex items-center justify-center px-6 lg:px-8 relative overflow-hidden">
+      <section className="flex flex-col items-center justify-center relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 -z-10">
           <DarkVeil
@@ -22,7 +22,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="max-w-4xl mx-auto text-center space-y-8 opacity-0 animate-fade-in-up stagger-1 mt-10">
+        <div className="max-w-4xl mx-auto text-center space-y-8 opacity-0 animate-fade-in-up stagger-1 mt-34 px-6 lg:px-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-dark-border bg-dark-surface/50 text-xs font-mono text-gray-400 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
@@ -57,11 +57,10 @@ export default function Home() {
               My Dashboard
             </Link>
           </div>
+        </div>
 
-          {/* Stats */}
-
-
-          <div className="text-white text-center w-screen">
+        {/* Stats */}
+        <div className="text-white text-center w-full mt-12">
             <CurvedLoop
               marqueeText="DONOR FI ✦ OPEN ✦ CAMPAIGNS ✦ SOLANA ✦"
               speed={1.4}
@@ -83,7 +82,7 @@ export default function Home() {
               <p className="text-sm text-gray-400">Community Members</p>
             </div>*/}
           </div>
-        </div>
+        
       </section>
 
       {/* Features Section */}

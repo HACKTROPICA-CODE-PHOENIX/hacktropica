@@ -6,6 +6,7 @@ import DarkVeil from "@/components/DarkVeil";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CampaignForm } from "@/components/forms/campaign-form";
+import { UpdateForm } from "@/components/forms/update-form";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
@@ -94,7 +95,7 @@ export default function DashboardPage() {
              <h2 className="text-xl font-bold text-white mb-4">Create NGO first</h2>
              <p className="text-gray-400 mb-6">You need to register an NGO profile to access the dashboard and campaigns.</p>
              <Link href="/create-ngo">
-               <Button className="bg-brand-500 text-black hover:bg-brand-600 font-bold">
+               <Button className="bg-white text-black font-bold">
                  Register NGO
                </Button>
              </Link>
@@ -134,9 +135,9 @@ export default function DashboardPage() {
                <h2 className="text-xl font-bold text-white">Your Campaigns</h2>
                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                  <DialogTrigger asChild>
-                   <Button className="bg-brand-500 text-black hover:bg-brand-600 font-bold" variant="default">Add Campaign</Button>
+                   <Button className="bg-white text-black font-bold" variant="default">Add Campaign</Button>
                  </DialogTrigger>
-                 <DialogContent className="bg-dark-bg border-white/10 text-white max-w-lg">
+                 <DialogContent className="bg-white/5 backdrop-blur-md border-white/10 text-white max-w-lg">
                    <DialogHeader>
                      <DialogTitle>Create New Campaign</DialogTitle>
                    </DialogHeader>
@@ -162,13 +163,29 @@ export default function DashboardPage() {
                      </CardHeader>
                      <CardContent>
                        <p className="text-gray-400 text-sm mb-4 line-clamp-3">{camp.description}</p>
-                       <div className="flex justify-between text-xs font-mono text-brand-500/80 mb-2">
+                       <div className="w-full flex items-center justify-between mb-2">
+                        <div className="flex flex-col justify-between text-xs font-mono text-brand-500/80 mb-2">
                          <span>Raised: {camp.raisedSol || 0} SOL</span>
                          <span>Target: {camp.targetSol} SOL</span>
                        </div>
-                       <div className="w-full bg-dark-bg h-2 rounded-full overflow-hidden">
+                       <Dialog>
+                         <DialogTrigger asChild>
+                           <Button className="bg-white text-black font-bold" variant="default">Update</Button>
+                         </DialogTrigger>
+                         <DialogContent className="bg-white/5 backdrop-blur-md border-white/10 text-white max-w-lg">
+                           <DialogHeader>
+                             <DialogTitle>Post an Update</DialogTitle>
+                           </DialogHeader>
+                           <UpdateForm campaignId={camp._id} onSuccess={() => {
+                             // Modal could close itself, but for now we just trigger a refresh
+                             setRefreshTrigger(prev => prev + 1);
+                           }} />
+                         </DialogContent>
+                       </Dialog>
+                       </div>
+                       <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
                          <div 
-                           className="bg-brand-500 h-full rounded-full" 
+                           className="bg-white h-full rounded-full" 
                            style={{ width: `${Math.min(((camp.raisedSol || 0) / camp.targetSol) * 100, 100)}%` }}
                          />
                        </div>
