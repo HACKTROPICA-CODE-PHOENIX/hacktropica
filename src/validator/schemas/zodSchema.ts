@@ -27,7 +27,7 @@ export type CampaignFormData = z.infer<typeof campaignSchema>;
 
 export const donationSchema = z.object({
   campaignId: z.string().min(1, "Campaign ID is required"),
-  amount: z.number().min(1, "Donation amount must be at least 1 SOL"),  
+  amount: z.number().min(0.001, "Donation amount must be at least 0.001 SOL"),  
 })
 
 export type DonationFormData = z.infer<typeof donationSchema>;
