@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { env } from "@/validator/schemas/env";
 import { NgoRegistrationFormData, ngoRegistrationSchema } from "@/validator/schemas/zodSchema";
 import clientPromise from "@/lib/db";
+import z from "zod";
 
 const genAI = new GoogleGenerativeAI(env.GEMINI_API);
 
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     if (!parsedData.success) {
       return NextResponse.json(
-        { success: false, errors: parsedData.error.flatten().fieldErrors },
+        { success: false, errors: z.flattenError(parsedData.error) },
         { status: 400 } 
       );
     }
@@ -22,11 +23,9 @@ export async function POST(req: NextRequest) {
 
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
-      // CRITICAL: Force the API to return clean JSON
       generationConfig: { responseMimeType: "application/json" } 
     });
 
-    // 4. Construct your strict prompt
     const prompt = `
       You are an expert fraud detection AI for a Web3 donation platform. 
       Analyze this NGO application and return ONLY a JSON object evaluating its legitimacy.
