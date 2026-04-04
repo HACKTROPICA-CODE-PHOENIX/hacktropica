@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { z } from "zod";
 
 export const ngoRegistrationSchema = z.object({
@@ -22,3 +23,11 @@ export const campaignSchema = z.object({
 })
 
 export type CampaignFormData = z.infer<typeof campaignSchema>;  
+
+
+export const donationSchema = z.object({
+  campaignId: z.string().min(1, "Campaign ID is required"),
+  amount: z.number().min(1, "Donation amount must be at least 1 SOL"),  
+})
+
+export type DonationFormData = z.infer<typeof donationSchema>;
