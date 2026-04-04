@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { WalletConnect } from "./WalletConnect";
 import { Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
+  const pathname = usePathname();
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
       <nav className="pointer-events-auto w-full max-w-7xl backdrop-blur-lg rounded-full border border-white/15 shadow-2xl shadow-black/80">
@@ -19,22 +22,32 @@ export function Navbar() {
                 <Zap className="w-4 h-4 md:w-5 md:h-5" />
               </div>
               <span className="font-heading font-bold text-xl md:text-2xl tracking-tighter uppercase">
-                NEXUS
+                DONOR FI
               </span>
             </Link>
 
             {/* Right Actions */}
             <div className="flex items-center gap-4 md:gap-6">
-              <div className="hidden md:flex gap-8 text-sm font-medium text-gray-400 mr-2">
-                <Link href="/" className="hover:text-white transition-colors">
-                  Home
-                </Link>
-                <Link href="/explore" className="hover:text-white transition-colors">
-                  Explore
-                </Link>
-                <Link href="/dashboard" className="hover:text-white transition-colors">
-                  Dashboard
-                </Link>
+              <div className="hidden md:flex gap-8 text-sm font-medium mr-2">
+                {[
+                  { href: "/", label: "Home" },
+                  { href: "/explore", label: "Explore" },
+                  { href: "/dashboard", label: "Dashboard" },
+                  { href: "/create-ngo", label: "Create NGO" },
+                ].map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={cn(
+                      "transition-colors relative py-1",
+                      pathname === href
+                        ? "text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-brand-500 after:rounded-full"
+                        : "text-gray-400 hover:text-white"
+                    )}
+                  >
+                    {label}
+                  </Link>
+                ))}
               </div>
 
               {/* Connect Wallet Button */}

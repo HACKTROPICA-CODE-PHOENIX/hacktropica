@@ -1,22 +1,14 @@
 import { notFound } from "next/navigation";
-import {
-  DUMMY_CAMPAIGNS,
-  DUMMY_NGOS,
-  DUMMY_UPDATES,
-} from "@/constants/mockData";
+import { ObjectId } from "mongodb";
+import clientPromise from "@/lib/db";
+import { Campaign, NGO, ImpactUpdate } from "@/constants/mockData";
 import { CampaignHeader } from "@/components/campaign/CampaignHeader";
 import { DonationBox } from "@/components/campaign/DonationBox";
 import { Timeline } from "@/components/timeline/Timeline";
 import DarkVeil from "@/components/DarkVeil";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-
-// Generate static params for mock data so it doesn't fail on build
-export function generateStaticParams() {
-  return DUMMY_CAMPAIGNS.map((c) => ({
-    id: c.id,
-  }));
-}
+import { log } from "console";
 
 export default async function CampaignPage({
   params,
@@ -24,14 +16,66 @@ export default async function CampaignPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const campaign = DUMMY_CAMPAIGNS.find((c) => c.id === id);
 
-  if (!campaign) {
+  // Validate the id is a valid ObjectId
+  if (!ObjectId.isValid(id)) {
     notFound();
   }
 
-  const ngo = DUMMY_NGOS.find((n) => n.id === campaign.ngoId);
-  const updates = DUMMY_UPDATES.filter((u) => u.campaignId === campaign.id);
+  const client = await clientPromise;
+  const db = client.db("hacktropica");
+
+  const rawCampaign = await db.collection("campaigns").findOne({ _id: new ObjectId(id) });
+
+  if (!rawCampaign) {
+    notFound();
+  }
+
+  const campaign: Campaign = {
+    id: rawCampaign._id.toString(),
+    ngoId: rawCampaign.ngoWalletAddress ?? "",
+    walletAddress: rawCampaign.ngoWalletAddress ?? "",
+    title: rawCampaign.title,
+    description: rawCampaign.description,
+    targetSol: rawCampaign.targetSol,
+    raisedSol: rawCampaign.raisedSol ?? 0,
+    createdAt: rawCampaign.createdAt instanceof Date ? rawCampaign.createdAt.toISOString() : String(rawCampaign.createdAt ?? ""),
+  };
+
+  // Find the NGO by wallet address
+  const rawNgo = await db.collection("ngos").findOne({ walletAddress: campaign.walletAddress });
+  const ngo: NGO | undefined = rawNgo
+    ? {
+        id: rawNgo._id.toString(),
+        walletAddress: rawNgo.walletAddress,
+        profile: rawNgo.profile ?? {
+          name: rawNgo.name ?? "Unknown",
+          mission: rawNgo.mission ?? "",
+          description: rawNgo.description ?? "",
+          fundPlan: rawNgo.fundPlan ?? "",
+        },
+        verificationStatus: rawNgo.verificationStatus ?? {
+          aiVerified: false,
+          trustScore: 0,
+          reasoning: "",
+        },
+        createdAt: rawNgo.createdAt instanceof Date ? rawNgo.createdAt.toISOString() : String(rawNgo.createdAt ?? ""),
+      }
+    : undefined;
+
+  // Fetch impact updates for this campaign
+  const rawUpdates = await db.collection("updates").find({ campaignId: campaign.id }).sort({ postedAt: -1 }).toArray();
+  const updates: ImpactUpdate[] = rawUpdates.map((u) => ({
+    id: u._id.toString(),
+    campaignId: u.campaignId,
+    type: u.type,
+    title: u.title,
+    description: u.description,
+    imageUrl: u.imageUrl ?? "",
+    postedAt: u.postedAt instanceof Date ? u.postedAt.toISOString() : String(u.postedAt ?? ""),
+  }));
+
+  //console.log(campaign.walletAddress);
 
   return (
     <>

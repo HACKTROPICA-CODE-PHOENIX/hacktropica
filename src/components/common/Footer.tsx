@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-brand-500" />
           <span className="font-heading font-bold text-xl tracking-tighter uppercase">
-            NEXUS
+            DONOR FI
           </span>
         </div>
 
@@ -35,7 +35,7 @@ export function Footer() {
         </div>
 
         <p className="text-xs text-gray-600 font-mono uppercase tracking-widest">
-          &copy; 2026 Nexus Protocol
+          &copy; 2026 Donor Fi Protocol
         </p>
       </div>
     </footer>

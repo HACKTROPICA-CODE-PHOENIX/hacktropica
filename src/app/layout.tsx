@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexus | Next-Gen Web3 Funding",
+  title: "Donor Fi | Next-Gen Web3 Funding",
   description: "Explore and fund high-impact, permissionless Web3 initiatives",
 };
 

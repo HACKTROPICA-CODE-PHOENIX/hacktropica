@@ -18,7 +18,7 @@ export default function Home() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-dark-border bg-dark-surface/50 text-xs font-mono text-gray-400 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
-            Welcome to NEXUS
+            Welcome to DONOR FI
           </div>
 
           {/* Main Headline */}
@@ -72,7 +72,7 @@ export default function Home() {
       <section className="py-20 px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-16 opacity-0 animate-fade-in-up stagger-1">
           <h2 className="text-4xl md:text-5xl font-heading font-bold tracking-tighter text-white mb-4 uppercase">
-            Why NEXUS?
+            Why DONOR FI?
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             A new way to support meaningful projects with transparency and security
