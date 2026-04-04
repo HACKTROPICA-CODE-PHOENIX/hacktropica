@@ -72,7 +72,7 @@ export default async function CampaignPage({
     title: u.title,
     description: u.description,
     imageUrl: u.imageUrl ?? "",
-    postedAt: u.postedAt instanceof Date ? u.postedAt.toISOString() : String(u.postedAt ?? ""),
+    createdAt: u.createdAt instanceof Date ? u.createdAt.toISOString() : String(u.createdAt ?? ""),
   }));
 
   //console.log(campaign.walletAddress);

@@ -47,7 +47,7 @@ export function TimelineItem({ update, isEven }: TimelineItemProps) {
               {update.type.charAt(0).toUpperCase() + update.type.slice(1)}
             </Badge>
             <time className="text-xs text-muted-foreground whitespace-nowrap">
-              {new Date(update.postedAt).toLocaleDateString()}
+              {new Date(update.createdAt).toLocaleDateString()}
             </time>
           </div>
           <CardTitle className="text-lg">{update.title}</CardTitle>

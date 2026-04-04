@@ -44,7 +44,7 @@ export interface ImpactUpdate {
   title: string;
   description: string;
   imageUrl: string;
-  postedAt: string;
+  createdAt: string;
 }
 
 export const DUMMY_NGOS: NGO[] = [
