@@ -4,6 +4,8 @@ import { CampaignCard } from "@/components/campaign/CampaignCard";
 import { Activity } from "lucide-react";
 import DarkVeil from "@/components/DarkVeil";
 
+export const dynamic = "force-dynamic";
+
 async function getCampaignsAndNgos() {
   const client = await clientPromise;
   const db = client.db("hacktropica");
@@ -46,7 +48,7 @@ async function getCampaignsAndNgos() {
 
 export default async function Explore() {
   const { campaigns, ngos } = await getCampaignsAndNgos();
-
+  
   return (
     <>
       <div className="fixed inset-0 w-full h-screen -z-10 opacity-50">
