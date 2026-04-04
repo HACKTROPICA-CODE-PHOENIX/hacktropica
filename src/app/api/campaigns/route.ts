@@ -6,7 +6,7 @@ export async function GET () {
 
     const collection = client.db("hacktropica").collection("campaigns");
     
-    const campaigns = await collection.find({}).sort({createdAt: -1}).limit(50).toArray();
+    const allCampaigns = await collection.find({}).sort({createdAt: -1}).limit(50).toArray();
 
-    return NextResponse.json({ campaigns });
+    return NextResponse.json({ allCampaigns });
 }
