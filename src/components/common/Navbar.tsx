@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WalletConnect } from "./WalletConnect";
-import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -18,8 +17,8 @@ export function Navbar() {
               href="/"
               className="flex items-center gap-3 cursor-pointer group hover:opacity-80 transition-opacity"
             >
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-500/30 flex items-center justify-center text-brand-500 group-hover:bg-brand-500 group-hover:text-black transition-all duration-300">
-                <Zap className="w-4 h-4 md:w-5 md:h-5" />
+              <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-brand-500 group-hover:bg-brand-500 group-hover:text-black transition-all duration-300">
+                <img src="/images/logo.png" alt="logo" className="w-6 h-6 md:w-8 md:h-8" />
               </div>
               <span className="font-heading font-bold text-xl md:text-2xl tracking-tighter uppercase">
                 DONOR FI
