@@ -27,7 +27,7 @@ export function WalletConnect() {
       className="btn-glow bg-white text-black px-5 py-2.5 md:px-6 md:py-3 rounded-full font-heading font-semibold text-xs md:text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95 disabled:opacity-70"
     >
       <div className={`w-2 h-2 rounded-full transition-colors ${
-        isConnected ? 'bg-green-500' : 'bg-brand-500 animate-pulse'
+        isConnected ? 'bg-green-500' : 'bg-orange-500 animate-pulse'
       }`} />
       <span>
         {connecting ? "Initializing..." : isConnected ? (formattedAddress || "Connected") : "Connect Wallet"}

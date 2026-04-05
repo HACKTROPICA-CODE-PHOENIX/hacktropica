@@ -34,7 +34,7 @@ export default function Home() {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tighter text-white mb-6 uppercase leading-tight">
               Fund Impact,
               <br />
-              <span className="text-gradient-orange italic">Permissionless</span>
+              <span className="text-gradient-orange italic inline-block pr-4">Permissionless</span>
             </h1>
             <p className="text-base md:text-lg text-gray-400 font-light leading-relaxed max-w-2xl mx-auto">
               Discover and support high-impact Web3 initiatives. Direct funding, transparent tracking, and verifiable outcomes on-chain.
