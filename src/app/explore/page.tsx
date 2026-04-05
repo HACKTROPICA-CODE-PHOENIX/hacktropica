@@ -1,65 +1,76 @@
-import clientPromise from "@/lib/db";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Campaign, NGO } from "@/constants/mockData";
 import { CampaignCard } from "@/components/campaign/CampaignCard";
 import DarkVeil from "@/components/DarkVeil";
 
-export const dynamic = "force-dynamic";
+export default function Explore() {
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [ngos, setNgos] = useState<NGO[]>([]);
+  const [sum, setSum] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-async function getCampaignsAndNgos() {
-  const client = await clientPromise;
-  const db = client.db("hacktropica");
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [campRes, ngoRes] = await Promise.all([
+          fetch("/api/campaigns").then((r) => r.json()),
+          fetch("/api/ngos").then((r) => r.json()),
+        ]);
 
-  const [rawCampaigns, rawNgos] = await Promise.all([
-    db.collection("campaigns").find({}).sort({ createdAt: -1 }).limit(50).toArray(),
-    db.collection("ngos").find({}).toArray(),
-  ]);
+        const mappedCampaigns: Campaign[] = (campRes.allCampaigns || []).map((c: any) => ({
+          id: c._id,
+          ngoId: c.ngoWalletAddress ?? "",
+          walletAddress: c.ngoWalletAddress ?? "",
+          title: c.title,
+          description: c.description,
+          targetSol: c.targetSol,
+          raisedSol: c.raisedSol ?? 0,
+          createdAt: c.createdAt ?? "",
+        }));
 
-  const campaigns: Campaign[] = rawCampaigns.map((c) => ({
-    id: c._id.toString(),
-    ngoId: c.ngoWalletAddress ?? "",
-    walletAddress: c.ngoWalletAddress ?? "",
-    title: c.title,
-    description: c.description,
-    targetSol: c.targetSol,
-    raisedSol: c.raisedSol ?? 0,
-    createdAt: c.createdAt instanceof Date ? c.createdAt.toISOString() : String(c.createdAt ?? ""),
-  }));
-  
-  let sum = 0;
-  rawCampaigns.forEach((c) => {
-    sum += c.raisedSol;
-  });
+        const mappedNgos: NGO[] = (ngoRes.ngos || []).map((n: any) => ({
+          id: n._id,
+          walletAddress: n.walletAddress,
+          profile: n.profile ?? {
+            name: n.name ?? "Unknown",
+            mission: n.mission ?? "",
+            description: n.description ?? "",
+            fundPlan: n.fundPlan ?? "",
+          },
+          verificationStatus: n.verificationStatus ?? {
+            aiVerified: false,
+            trustScore: 0,
+            reasoning: "",
+          },
+          createdAt: n.createdAt ?? "",
+        }));
 
-  const ngos: NGO[] = rawNgos.map((n) => ({
-    id: n._id.toString(),
-    walletAddress: n.walletAddress,
-    profile: n.profile ?? {
-      name: n.name ?? "Unknown",
-      mission: n.mission ?? "",
-      description: n.description ?? "",
-      fundPlan: n.fundPlan ?? "",
-    },
-    verificationStatus: n.verificationStatus ?? {
-      aiVerified: false,
-      trustScore: 0,
-      reasoning: "",
-    },
-    createdAt: n.createdAt instanceof Date ? n.createdAt.toISOString() : String(n.createdAt ?? ""),
-  }));
+        let total = 0;
+        mappedCampaigns.forEach((c) => {
+          total += c.raisedSol;
+        });
 
-  return { campaigns, ngos, sum };
-}
+        setCampaigns(mappedCampaigns);
+        setNgos(mappedNgos);
+        setSum(total);
+      } catch (err) {
+        console.error("Failed to fetch explore data", err);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-export default async function Explore() {
-
-  const { campaigns, ngos, sum } = await getCampaignsAndNgos();
+    fetchData();
+  }, []);
 
   const formatSum = (num: number) => {
     if (num >= 1000) {
       return (num / 1000).toFixed(1) + "K";
     }
     return num.toFixed(1);
-  }
+  };
 
   return (
     <>
@@ -106,15 +117,23 @@ export default async function Explore() {
             </p>
           </div>
         </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="text-gray-400 animate-pulse text-center py-12">Loading campaigns...</div>
+        )}
+
         {/* Grid Container for Campaigns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-0 animate-fade-in-up stagger-3">
-          {campaigns.map((campaign) => {
-            const ngo = ngos.find((n) => n.walletAddress === campaign.walletAddress);
-            return (
-              <CampaignCard key={campaign.id} campaign={campaign} ngo={ngo} />
-            );
-          })}
-        </div>
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-0 animate-fade-in-up stagger-3">
+            {campaigns.map((campaign) => {
+              const ngo = ngos.find((n) => n.walletAddress === campaign.walletAddress);
+              return (
+                <CampaignCard key={campaign.id} campaign={campaign} ngo={ngo} />
+              );
+            })}
+          </div>
+        )}
       </main>
     </>
   );
