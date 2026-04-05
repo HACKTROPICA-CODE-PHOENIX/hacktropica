@@ -77,12 +77,12 @@ export default async function Explore() {
         {/* Titlebar Section */}
         <div className="relative flex flex-col justify-center min-h-[180px] mb-10 pb-8 border-b border-dark-border opacity-0 animate-fade-in-up stagger-1">
           {/* Massive Blurred Background Stat */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 -z-10 flex flex-col items-end opacity-20 pointer-events-none select-none [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
+          <div className="absolute right-0 bottom-0 translate-y-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 -z-10 flex flex-col items-end opacity-20 pointer-events-none select-none [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
             <div className="flex items-baseline gap-2">
-              <span className="text-[120px] md:text-[200px] font-heading font-bold text-white tracking-tighter leading-none">
+              <span className="text-[40px] md:text-[200px] font-heading font-bold text-white tracking-tighter leading-none">
                 {formatSum(sum)}
               </span>
-              <span className="text-brand-500 font-mono text-5xl md:text-7xl font-bold">
+              <span className="text-brand-500 font-mono text-4xl md:text-7xl font-bold">
                 SOL
               </span>
             </div>
