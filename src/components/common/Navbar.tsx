@@ -22,7 +22,7 @@ export function Navbar() {
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
       <nav 
         className={cn(
-          "pointer-events-auto w-full max-w-7xl backdrop-blur-lg border border-white/15 shadow-2xl shadow-black/80 transition-all duration-300",
+          "pointer-events-auto w-full max-w-7xl backdrop-blur-lg border border-white/15 shadow-2xl shadow-black/80 transition-colors duration-300",
           isMobileMenuOpen ? "rounded-3xl bg-dark-surface/80" : "rounded-full"
         )}
       >
