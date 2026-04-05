@@ -42,17 +42,17 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in-up stagger-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up stagger-2">
             <Link
               href="/explore"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white hover:bg-brand-600 text-black font-medium transition-colors"
+              className="inline-flex items-center justify-center gap-2 w-56 sm:w-auto px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base rounded-full bg-white hover:bg-brand-600 text-black font-medium transition-colors"
             >
               Explore Campaigns
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/dashboard"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-dark-border hover:border-gray-500 text-white font-medium transition-colors"
+              className="inline-flex items-center justify-center gap-2 w-56 sm:w-auto px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base rounded-full border border-dark-border hover:border-gray-500 text-white font-medium transition-colors"
             >
               My Dashboard
             </Link>
