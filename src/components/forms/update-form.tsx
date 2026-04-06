@@ -18,7 +18,7 @@ export function UpdateForm({ campaignId, onSuccess }: { campaignId: string, onSu
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateFormData>({
-    resolver: zodResolver(updateSchema),
+    resolver: zodResolver(updateSchema as any),
     defaultValues: {
       campaignId: campaignId,
       title: "",
@@ -54,7 +54,7 @@ export function UpdateForm({ campaignId, onSuccess }: { campaignId: string, onSu
       console.error(err);
       // Failsafe execution to not block testing if route doesn't exist yet
       if (onSuccess) {
-         onSuccess();
+        onSuccess();
       }
     } finally {
       setLoading(false);
@@ -64,7 +64,7 @@ export function UpdateForm({ campaignId, onSuccess }: { campaignId: string, onSu
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-      
+
       <div className="space-y-2">
         <Label htmlFor="title" className="text-gray-200">Update Title</Label>
         <Input
@@ -108,8 +108,8 @@ export function UpdateForm({ campaignId, onSuccess }: { campaignId: string, onSu
         {errors.description && <p className="text-red-500 text-xs">{errors.description.message}</p>}
       </div>
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={loading}
         className="w-full bg-white text-black font-bold hover:bg-gray-200 transition-colors"
       >
