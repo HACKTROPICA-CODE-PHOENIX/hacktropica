@@ -49,7 +49,7 @@ export default function RootLayout({
         <div className="glow-orb w-[500px] h-[500px] bg-indigo-900/20 bottom-[10%] left-[-150px] animate-blob-reverse" />
 
         <WalletProvider>
-          <Navbar />
+           <Navbar />
           <main className="flex-1 relative z-10">{children}</main>
           <Footer />
         </WalletProvider>
