@@ -102,7 +102,7 @@ export default function Explore() {
           {/* Foreground Content */}
           <div className="max-w-2xl relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-dark-border bg-dark-surface/50 text-xs font-mono text-gray-400 mb-4 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
               Live Network
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tighter text-white mb-3 uppercase drop-shadow-lg">
