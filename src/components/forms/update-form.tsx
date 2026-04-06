@@ -18,7 +18,7 @@ export function UpdateForm({ campaignId, onSuccess }: { campaignId: string, onSu
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateFormData>({
-    resolver: zodResolver(updateSchema),
+    resolver: zodResolver(updateSchema as any),
     defaultValues: {
       campaignId: campaignId,
       title: "",
