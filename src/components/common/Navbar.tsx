@@ -36,7 +36,7 @@ export function Navbar() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center text-brand-500 group-hover:bg-brand-500 group-hover:text-black transition-all duration-300 flex-shrink-0">
               <img src="/images/logo.png" alt="logo" className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
             </div>
-            <span className="font-heading font-bold text-base sm:text-lg md:text-2xl tracking-tighter uppercase whitespace-nowrap hidden sm:inline">
+            <span className="font-heading font-bold text-base sm:text-lg md:text-2xl tracking-tighter uppercase whitespace-nowrap sm:inline">
               DONOR FI
             </span>
           </Link>

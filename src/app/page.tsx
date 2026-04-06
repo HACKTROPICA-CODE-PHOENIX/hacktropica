@@ -31,7 +31,7 @@ export default function Home() {
 
           {/* Main Headline */}
           <div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tighter text-white mb-6 uppercase leading-tight">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tighter text-white mb-6 uppercase leading-tight">
               Fund Impact,
               <br />
               <span className="text-gradient-orange italic inline-block pr-4">Permissionless</span>
